@@ -15,7 +15,8 @@ JOBS="${LYRA_JOBS:-$(( $(nproc) > 1 ? $(nproc) - 1 : 1 ))}"
 
 export MOZBUILD_STATE_PATH="${MOZBUILD_STATE_PATH:-${USERPROFILE:-$HOME}/.mozbuild}"
 MOZBUILD_STATE_PATH="$(cygpath -m "$MOZBUILD_STATE_PATH")"
-export PATH="$(cygpath -u "${USERPROFILE:-$HOME}")/.cargo/bin:${PATH}"
+PATH="$(cygpath -u "${USERPROFILE:-$HOME}")/.cargo/bin:${PATH}"
+export PATH
 umask 022
 
 # Long compiles on hosted runners get SIGTERM with no hint. Log memory
@@ -38,7 +39,8 @@ export PATH="/c/mozilla-build/bin:$PATH"
 if ! command -v python3 >/dev/null && ! command -v python >/dev/null; then
   pyexe="$(find /c/mozilla-build -maxdepth 3 \( -name 'python3.exe' -o -name 'python.exe' \) 2>/dev/null | head -1)"
   if [[ -n "$pyexe" ]]; then
-    export PATH="$(dirname "$pyexe"):$PATH"
+    PATH="$(dirname "$pyexe"):$PATH"
+    export PATH
   fi
 fi
 if ! command -v python3 >/dev/null && command -v python >/dev/null; then
@@ -157,7 +159,8 @@ if [[ ! -f "$sdk_dir/CoreMessagingXP.dll" ]]; then
   done
   rm -rf "$sdk_cache/MSIX"
 fi
-export MOZ_WINDOWS_APP_SDK_DIR="$(cygpath -m "$sdk_dir")"
+MOZ_WINDOWS_APP_SDK_DIR="$(cygpath -m "$sdk_dir")"
+export MOZ_WINDOWS_APP_SDK_DIR
 
 # Wasm-sandboxed libraries need a wasi sysroot. Bootstrap does not fetch
 # it on Windows, so unpack the pinned wasi-sdk sysroot. wasi-sdk 27 is
@@ -175,7 +178,8 @@ if [[ ! -f "$wasi_dir/lib/wasm32-wasi/libc.a" ]]; then
   echo "7110ac48f5d0b1f6ab67d57aecf52450540dddd790cafdc45f0fdfb429bdab84  $tarball" | sha256sum -c -
   /c/Windows/System32/tar.exe -C "$wasi_cache" -xzf "$tarball"
 fi
-export WASI_SYSROOT="$(cygpath -m "$wasi_dir")"
+WASI_SYSROOT="$(cygpath -m "$wasi_dir")"
+export WASI_SYSROOT
 
 # The wasm link check wants libclang_rt.builtins.a for wasm32-unknown-wasi
 # inside the clang resource dir. Drop the pinned copy next to the image
@@ -222,7 +226,8 @@ if [[ ! -f "$winrs_dir/Cargo.toml" ]]; then
   echo "527fadee13e0c05939a6a05d5bd6eec6cd2e3dbd648b9f8e447c6518133d8580  $crate" | sha256sum -c -
   /c/Windows/System32/tar.exe -C "$ROOT/.cache/windows-rs" -xzf "$crate"
 fi
-export MOZ_WINDOWS_RS_DIR="$(cygpath -m "$winrs_dir")"
+MOZ_WINDOWS_RS_DIR="$(cygpath -m "$winrs_dir")"
+export MOZ_WINDOWS_RS_DIR
 
 # gkrust compiles with fat LTO and one codegen unit, needing more RAM than
 # a hosted runner has. Thin LTO plus a few codegen units still optimizes

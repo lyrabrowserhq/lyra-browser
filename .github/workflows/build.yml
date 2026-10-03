@@ -1,0 +1,54 @@
+name: Build
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  linux:
+    name: Linux tarball
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    permissions:
+      contents: write # upload artifacts and create GitHub release on tags
+    environment: release
+    env:
+      LYRA_RELEASE_KEY: ${{ secrets.LYRA_RELEASE_KEY }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Free runner disk
+        run: scripts/ci-free-disk.sh
+
+      - name: Compile Lyra
+        run: scripts/ci-linux-build.sh
+
+      - name: Sign release manifest
+        if: env.LYRA_RELEASE_KEY != ''
+        run: python3 scripts/sign-release.py --dist out --out out --require-key
+
+      - name: Upload tarball
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: lyra-linux-x86_64
+          path: out/
+          retention-days: 30
+
+      - name: Publish release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ github.ref_name }}
+        run: gh release create "$TAG" out/* --title "$TAG" --generate-notes
