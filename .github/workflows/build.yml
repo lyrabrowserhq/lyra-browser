@@ -1,99 +1,235 @@
-name: Build
+name: build
 
 on:
   workflow_dispatch:
+    inputs:
+      extra_mozconfig:
+        description: Extra mozconfig lines
+        required: false
+        type: string
+        default: ""
+      linux:
+        description: Build Linux job
+        required: false
+        type: boolean
+        default: true
+      windows:
+        description: Build Windows job
+        required: false
+        type: boolean
+        default: true
   push:
-    tags: ["v*"]
+    tags:
+      - "v*"
 
 permissions:
   contents: read
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.event_name == 'workflow_dispatch' && format('build-{0}', github.run_id) || format('build-{0}', github.ref) }}
   cancel-in-progress: false
 
 jobs:
   linux:
-    name: Linux tarball
+    name: Linux x86_64
+    if: github.event_name != 'workflow_dispatch' || inputs.linux
     runs-on: ubuntu-latest
-    timeout-minutes: 350
+    timeout-minutes: 360
+    permissions:
+      contents: read
+    env:
+      EXTRA_MOZCONFIG: ${{ github.event.inputs.extra_mozconfig || '' }}
     steps:
-      - name: Checkout
+      - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
-      - name: Free runner disk
-        run: scripts/ci-free-disk.sh
+      - name: Free disk
+        run: bash scripts/ci-free-disk.sh
+
+      - name: Cache source and toolchains
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        # zizmor: ignore[cache-poisoning] tags and dispatch both need write access; no PR/fork trigger can write these caches
+        with:
+          path: |
+            .cache
+            ~/.mozbuild
+          key: lyra-src-${{ hashFiles('VERSION') }}
+          restore-keys: lyra-src-
+
+      - name: Cache compiler output
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        # zizmor: ignore[cache-poisoning] tags and dispatch both need write access; no PR/fork trigger can write these caches
+        with:
+          path: .sccache
+          key: sccache-linux-${{ github.ref }}-${{ hashFiles('VERSION', 'mozconfig', 'mozconfig.linux') }}
+          restore-keys: |
+            sccache-linux-${{ github.ref }}-
+            sccache-linux-
+
+      - name: Install sccache
+        run: |
+          curl -sfL --retry 3 \
+            "https://github.com/mozilla/sccache/releases/download/v0.18.0/sccache-v0.18.0-x86_64-unknown-linux-musl.tar.gz" \
+            -o /tmp/sccache.tgz
+          echo "45f1447fbe231e3037bde351ef70677dd212216c8d62ae7ca409fecc4d6acc89  /tmp/sccache.tgz" | sha256sum -c
+          tar -xzf /tmp/sccache.tgz -C /tmp
+          mkdir -p "$HOME/.local/bin"
+          install -m755 /tmp/sccache-v0.18.0-x86_64-unknown-linux-musl/sccache "$HOME/.local/bin/"
+          echo "SCCACHE_DIR=$GITHUB_WORKSPACE/.sccache" >> "$GITHUB_ENV"
 
       - name: Compile Lyra
-        run: scripts/ci-linux-build.sh
+        run: bash scripts/ci-linux-build.sh
 
-      - name: Upload tarball
+      - name: Upload Linux tarball
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: lyra-linux-x86_64
-          path: out/*.tar.xz
-          retention-days: 7
+          path: out/lyra-*-linux-x86_64.tar.xz
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 14
 
   windows:
-    name: Windows zip
+    name: Windows x86_64
+    if: github.event_name != 'workflow_dispatch' || inputs.windows
     runs-on: windows-latest
-    timeout-minutes: 350
+    timeout-minutes: 360
+    permissions:
+      contents: read
+    env:
+      EXTRA_MOZCONFIG: ${{ github.event.inputs.extra_mozconfig || '' }}
     steps:
-      - name: Checkout
+      - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
-      - name: Compile Lyra
-        shell: bash
-        run: scripts/ci-windows-build.sh
+      - name: Free disk and enable long paths
+        shell: pwsh
+        run: |
+          Remove-Item -Recurse -Force "$env:ANDROID_HOME", "$env:ANDROID_SDK_ROOT", "C:\Program Files\dotnet", "C:\hostedtoolcache" -ErrorAction SilentlyContinue
+          Set-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem' -Name 'LongPathsEnabled' -Value 1
+          git config --system core.longpaths true
+          Get-PSDrive C | Select-Object Used, Free
 
-      - name: Upload zip
+      - name: Install MozillaBuild
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $ProgressPreference = 'SilentlyContinue'
+          $exe = "$env:RUNNER_TEMP\MozillaBuildSetup.exe"
+          Invoke-WebRequest -Uri "https://ftp.mozilla.org/pub/mozilla/libraries/win32/MozillaBuildSetup-4.2.1.exe" -OutFile $exe
+          $hash = (Get-FileHash $exe -Algorithm SHA256).Hash.ToLower()
+          if ($hash -ne "8ef5b3d2087e4867dc75bf19f5e62f12e917f518239415723cc70896b6f1e3d8") {
+            throw "MozillaBuildSetup hash mismatch: $hash"
+          }
+          Start-Process $exe -ArgumentList '/S','/D=C:\mozilla-build' -Wait
+          $bash = Get-ChildItem 'C:\mozilla-build' -Recurse -Filter 'bash.exe' | Select-Object -First 1
+          if (-not $bash) { throw "bash.exe not found under C:\mozilla-build" }
+          "MOZ_BASH=$($bash.FullName)" >> $env:GITHUB_ENV
+          Write-Output "MozillaBuild bash: $($bash.FullName)"
+          $rebase = 'C:\mozilla-build\msys2\autorebase.bat'
+          if (Test-Path $rebase) { & cmd /c $rebase }
+
+      - name: Cache source and toolchains
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        # zizmor: ignore[cache-poisoning] tags and dispatch both need write access; no PR/fork trigger can write these caches
+        with:
+          path: |
+            .cache
+            ~/.mozbuild
+          key: lyra-src-${{ hashFiles('VERSION') }}
+          restore-keys: lyra-src-
+
+      - name: Cache compiler output
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        # zizmor: ignore[cache-poisoning] tags and dispatch both need write access; no PR/fork trigger can write these caches
+        with:
+          path: .sccache
+          key: sccache-win-${{ github.ref }}-${{ hashFiles('VERSION', 'mozconfig', 'mozconfig.windows') }}
+          restore-keys: |
+            sccache-win-${{ github.ref }}-
+            sccache-win-
+
+      - name: Install sccache
+        shell: pwsh
+        run: |
+          $tgz = "$env:RUNNER_TEMP\sccache.tgz"
+          Invoke-WebRequest -Uri "https://github.com/mozilla/sccache/releases/download/v0.18.0/sccache-v0.18.0-x86_64-pc-windows-msvc.tar.gz" -OutFile $tgz
+          $hash = (Get-FileHash $tgz -Algorithm SHA256).Hash.ToLower()
+          if ($hash -ne "1a63c1be2beab3f04d27e4cc145443e092e02d3dd83a51030989829d7023091b") {
+            throw "sccache hash mismatch: $hash"
+          }
+          tar -xzf $tgz -C $env:RUNNER_TEMP
+          $exe = Get-ChildItem "$env:RUNNER_TEMP" -Recurse -Filter 'sccache.exe' | Select-Object -First 1
+          $dest = "$env:RUNNER_TEMP\sccache-bin"
+          New-Item -ItemType Directory -Force $dest | Out-Null
+          Copy-Item $exe.FullName "$dest\sccache.exe"
+          $msys = ($dest -replace '\\','/')
+          $msys = '/' + $msys.Substring(0,1).ToLower() + $msys.Substring(2)
+          $msys >> $env:GITHUB_PATH
+          "SCCACHE_DIR=$env:GITHUB_WORKSPACE\.sccache" >> $env:GITHUB_ENV
+
+      - name: Compile Lyra
+        shell: pwsh
+        run: |
+          & $env:MOZ_BASH -lc 'cd "$(cygpath -u "$GITHUB_WORKSPACE")" && exec bash scripts/ci-windows-build.sh'
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Upload Windows zip
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: lyra-windows-x86_64
-          path: out/*.zip
-          retention-days: 7
+          path: out/lyra-*-windows-x86_64.zip
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 14
 
   release:
-    name: Sign and publish
-    if: startsWith(github.ref, 'refs/tags/v')
-    needs: [linux, windows]
+    name: GitHub release
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    needs:
+      - linux
+      - windows
+    if: github.ref_type == 'tag'
     permissions:
-      contents: write # create GitHub release
+      contents: write # create the GitHub release and attach artifacts
       id-token: write # artifact attestation
       attestations: write # artifact attestation
-    environment: release
     env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_REPO: ${{ github.repository }}
+      TAG: ${{ github.ref_name }}
       LYRA_RELEASE_KEY: ${{ secrets.LYRA_RELEASE_KEY }}
     steps:
-      - name: Download linux tarball
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          name: lyra-linux-x86_64
-          path: out
+          persist-credentials: false
 
-      - name: Download windows zip
+      - name: Download artifacts
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
-          name: lyra-windows-x86_64
-          path: out
+          path: dist
+          merge-multiple: true
 
       - name: Sign release manifest
-        run: python3 scripts/sign-release.py --dist out --out out --require-key
+        run: python3 scripts/sign-release.py --dist dist --out dist --require-key
 
       - name: Attest artifacts
         uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
         with:
-          subject-path: out/*
+          subject-path: dist/*
 
       - name: Publish release
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_REPO: ${{ github.repository }}
-          TAG: ${{ github.ref_name }}
-        run: gh release create "$TAG" out/* --title "$TAG" --generate-notes
+        run: |
+          ls -lh dist
+          gh release create "$TAG" dist/* \
+            --repo "$GH_REPO" \
+            --title "Lyra $TAG" \
+            --generate-notes \
+          || gh release upload "$TAG" dist/* \
+            --repo "$GH_REPO" \
+            --clobber
