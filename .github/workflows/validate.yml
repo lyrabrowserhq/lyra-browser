@@ -1,0 +1,78 @@
+name: Validate
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: Validate and lint (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.x"
+
+      - name: Validate layout and policies
+        run: python3 scripts/validate.py
+
+      - name: Test release signing
+        run: python3 scripts/test_release_sign.py
+        shell: bash
+
+      - name: Python syntax check
+        run: python3 -m compileall -q scripts branding
+
+      - name: Shellcheck
+        if: runner.os == 'Linux'
+        run: shellcheck -S warning scripts/*.sh extensions/ublock/fetch.sh
+
+  commitlint:
+    name: commitlint
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Install commitlint
+        env:
+          HUSKY: "0"
+        run: npm ci
+
+      - name: Lint commits
+        env:
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD: ${{ github.event.pull_request.head.sha }}
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.sha }}
+        run: |
+          if [ -n "$PR_BASE" ]; then
+            npx commitlint --from "$PR_BASE" --to "$PR_HEAD" --verbose
+          elif [ "$BEFORE" != "0000000000000000000000000000000000000000" ]; then
+            npx commitlint --from "$BEFORE" --to "$AFTER" --verbose
+          else
+            npx commitlint --last --verbose
+          fi
