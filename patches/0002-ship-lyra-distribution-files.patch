@@ -1,0 +1,26 @@
+From: Lyra <dev@lyrabrowser.com>
+Subject: Always ship Lyra distribution.ini and policies.json
+
+Mozilla only installs distribution.ini when BUILT_BY_MOZILLA is set.
+Lyra always ships distribution files.
+
+---
+ browser/app/distribution/moz.build | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/browser/app/distribution/moz.build b/browser/app/distribution/moz.build
+index 1111111..2222222 100644
+--- a/browser/app/distribution/moz.build
++++ b/browser/app/distribution/moz.build
+@@ -5,8 +5,10 @@
+ 
+ DIST_SUBDIR = ""
+ 
+-if CONFIG["BUILT_BY_MOZILLA"]:
+-    FINAL_TARGET_FILES.distribution += [
+-        "distribution.ini",
+-    ]
++FINAL_TARGET_FILES.distribution += [
++    "distribution.ini",
++    "policies.json",
++]

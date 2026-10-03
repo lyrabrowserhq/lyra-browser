@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Lyra history</title>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="chrome://browser/content/lyra/history.css" />
+  <link rel="localization" href="browser/lyraHistory.ftl" />
+  <script defer="defer" src="chrome://browser/content/lyra/history.js" />
+</head>
+<body>
+  <main>
+    <h1 data-l10n-id="lyra-history-title"></h1>
+    <p data-l10n-id="lyra-history-subtitle"></p>
+    <div class="bar">
+      <input id="q" type="search" data-l10n-id="lyra-history-search-box" autofocus="autofocus" />
+      <label>
+        <input id="indexToggle" type="checkbox" />
+        <span data-l10n-id="lyra-history-index-toggle"></span>
+      </label>
+    </div>
+    <p class="hint" data-l10n-id="lyra-history-index-hint"></p>
+    <ol id="results"></ol>
+  </main>
+</body>
+</html>

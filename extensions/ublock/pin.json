@@ -1,0 +1,21 @@
+{
+  "addon_id": "uBlock0@raymondhill.net",
+  "name": "uBlock Origin",
+  "version": "1.75.0",
+  "license": "GPL-3.0-only",
+  "upstream": "https://github.com/gorhill/uBlock",
+  "amo": "https://addons.mozilla.org/firefox/addon/ublock-origin/",
+  "xpi": {
+    "filename": "uBlock0_1.75.0.firefox.signed.xpi",
+    "url": "https://github.com/gorhill/uBlock/releases/download/1.75.0/uBlock0_1.75.0.firefox.signed.xpi",
+    "sha256": "5b74415860456370644bd80f16125e865b0e6c356bb5dfcfb84069967eaa5287",
+    "size": 4650100
+  },
+  "amo_latest": "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi",
+  "install": {
+    "mode": "bundled-distribution-xpi",
+    "policy": "force_installed",
+    "updates": "amo",
+    "private_browsing": true
+  }
+}

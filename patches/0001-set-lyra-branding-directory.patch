@@ -1,0 +1,26 @@
+From: Lyra <dev@lyrabrowser.com>
+Subject: Use Lyra as the default branding directory
+
+Set MOZ_BRANDING_DIRECTORY so official-style builds pick browser/branding/lyra
+even if --with-branding is omitted.
+
+---
+ browser/confvars.sh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/browser/confvars.sh b/browser/confvars.sh
+index 1111111..2222222 100644
+--- a/browser/confvars.sh
++++ b/browser/confvars.sh
+@@ -7,8 +7,8 @@
+ # MOZ_APP_DISPLAYNAME will be set by branding/configure.sh
+ # MOZ_BRANDING_DIRECTORY is the default branding directory used when none is
+ # specified. It should never point to the "official" branding directory.
+-# For mozilla-beta, mozilla-release, or mozilla-central repositories, use
+-# "unofficial" branding.
+-# For the mozilla-aurora repository, use "aurora".
+-MOZ_BRANDING_DIRECTORY=browser/branding/unofficial
+-MOZ_OFFICIAL_BRANDING_DIRECTORY=browser/branding/official
++# Lyra uses its own branding directory. Mozilla official branding is not used.
++MOZ_BRANDING_DIRECTORY=browser/branding/lyra
++MOZ_OFFICIAL_BRANDING_DIRECTORY=browser/branding/lyra

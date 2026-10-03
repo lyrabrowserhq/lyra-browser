@@ -1,0 +1,6 @@
+# Windows host extras. Concatenate after the root mozconfig:
+#   copy /b mozconfig+mozconfig.windows firefox-src\mozconfig
+
+ac_add_options --enable-default-toolkit=cairo-windows
+ac_add_options --disable-eme
+ac_add_options --enable-bundled-fonts

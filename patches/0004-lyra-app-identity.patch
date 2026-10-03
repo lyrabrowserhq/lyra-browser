@@ -1,0 +1,33 @@
+From: Lyra <lyra@lyrabrowser.com>
+Subject: Set Lyra app identity in browser/moz.configure
+
+Firefox 153+ only accepts MOZ_APP_VENDOR / MOZ_APP_ID / MOZ_APP_PROFILE via
+imply_option, not branding configure.sh.
+
+---
+ browser/moz.configure | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/browser/moz.configure b/browser/moz.configure
+index 1111111..2222222 100644
+--- a/browser/moz.configure
++++ b/browser/moz.configure
+@@ -6,13 +6,15 @@
+ imply_option("MOZ_PLACES", True)
+-imply_option("MOZ_SERVICES_HEALTHREPORT", True)
++imply_option("MOZ_SERVICES_HEALTHREPORT", False)
+ imply_option("MOZ_SERVICES_SYNC", True)
+ imply_option("MOZ_DEDICATED_PROFILES", True)
+ imply_option("MOZ_BLOCK_PROFILE_DOWNGRADE", True)
+-imply_option("MOZ_NORMANDY", True)
++imply_option("MOZ_NORMANDY", False)
+ imply_option("MOZ_PROFILE_MIGRATOR", True)
+ 
+ 
+-imply_option("MOZ_APP_VENDOR", "Mozilla")
+-imply_option("MOZ_APP_ID", "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}")
++imply_option("MOZ_APP_VENDOR", "Lyra")
++imply_option("MOZ_APP_PROFILE", "lyra")
++imply_option("MOZ_APP_ID", "{3a3a4f99-f5ed-5ace-b1c2-6ca778f01a59}")
+ # Include the DevTools client, not just the server (which is the default)
+ imply_option("MOZ_DEVTOOLS", "all")

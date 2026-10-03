@@ -1,0 +1,11 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+browser.jar:
+   content/browser/lyra/setup.xhtml   (setup.xhtml)
+   content/browser/lyra/setup.js      (setup.js)
+   content/browser/lyra/setup.css     (setup.css)
+   content/browser/lyra/history.xhtml (history.xhtml)
+   content/browser/lyra/history.js    (history.js)
+   content/browser/lyra/history.css   (history.css)

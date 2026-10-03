@@ -1,0 +1,56 @@
+{
+  "manifest_version": 2,
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "lyra-forest@lyrabrowser.com"
+    }
+  },
+  "name": "Lyra Forest",
+  "description": "Lyra forest chrome.",
+  "author": "Lyra",
+  "version": "1.0.0",
+  "icons": {
+    "32": "icon.svg"
+  },
+  "theme": {
+    "properties": {
+      "color_scheme": "dark"
+    },
+    "colors": {
+      "frame": "#0E1710",
+      "tab_background_text": "#EAF4EC",
+      "tab_text": "#EAF4EC",
+      "tab_line": "#5FBF7F",
+      "tab_loading": "#5FBF7F",
+      "tab_selected": "#17231A",
+      "toolbar": "#17231A",
+      "toolbar_text": "#EAF4EC",
+      "toolbar_field": "#0E1710",
+      "toolbar_field_text": "#EAF4EC",
+      "toolbar_field_border": "#2F4A36",
+      "toolbar_field_border_focus": "#5FBF7F",
+      "toolbar_field_highlight": "#1F3226",
+      "toolbar_top_separator": "#0E1710",
+      "toolbar_bottom_separator": "#0E1710",
+      "toolbar_vertical_separator": "#2F4A36",
+      "button_background_hover": "#1F3226",
+      "button_background_active": "#28402F",
+      "icons": "#EAF4EC",
+      "icons_attention": "#5FBF7F",
+      "ntp_background": "#0E1710",
+      "ntp_text": "#EAF4EC",
+      "popup": "#17231A",
+      "popup_text": "#EAF4EC",
+      "popup_border": "#2F4A36",
+      "popup_highlight": "#1F3226",
+      "popup_highlight_text": "#EAF4EC",
+      "sidebar": "#0E1710",
+      "sidebar_text": "#EAF4EC",
+      "sidebar_border": "#2F4A36",
+      "sidebar_highlight": "#17231A",
+      "sidebar_highlight_text": "#EAF4EC",
+      "bookmark_text": "#EAF4EC",
+      "focus_outline": "#5FBF7F"
+    }
+  }
+}

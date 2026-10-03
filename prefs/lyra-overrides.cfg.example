@@ -1,0 +1,54 @@
+
+
+// Copy this file to one of:
+//   $LYRA_OVERRIDES
+//   ~/.lyra/lyra-overrides.cfg
+//   lyra-overrides.cfg next to the Lyra binary
+//
+// Loaded last. Use pref / defaultPref / lockPref.
+// Examples:
+
+// Crowd-identical RFP (LibreWolf / Mullvad style)
+// pref("lyra.fingerprint.mode", "crowd");
+
+// Keep Firefox UA while using FPP
+// pref("lyra.fingerprint.mode", "firefox");
+
+// Turn letterboxing on without full RFP
+// pref("privacy.resistFingerprinting.letterboxing", true);
+
+// DoH off (native OS DNS)
+// pref("network.trr.mode", 5);
+
+// DoH only, no native fallback
+// pref("network.trr.mode", 3);
+
+// Skip bundled fonts
+// pref("gfx.bundled-fonts.activate", 0);
+
+// Show all installed fonts to pages
+// pref("layout.css.font-visibility", 3);
+
+// Typing timer rounding in microseconds (1000, 20000, or 100000)
+// pref("privacy.resistFingerprinting.reduceTimerPrecision.microseconds", 100000);
+
+// Timezone spoof off (use the real local zone)
+// pref("lyra.timezone.spoof", false);
+
+// Allow WebRTC host ICE candidates
+// pref("lyra.webrtc.protect", false);
+
+// Allow geolocation prompts (BeaconDB)
+// pref("lyra.geo.mode", "ask");
+
+// Spoof GPS to Reykjavik (matches the UTC timezone spoof)
+// pref("lyra.geo.mode", "spoof");
+
+// Check GitHub for signed Lyra updates at startup
+// pref("lyra.update.check", true);
+
+// WebGPU on one origin only
+// pref("lyra.webgpu.allowlist", "example.com");
+
+// WebGL opt-in per site (breaks Cloudflare until you list it)
+// pref("lyra.webgl.allowlist", "maps.example.com");

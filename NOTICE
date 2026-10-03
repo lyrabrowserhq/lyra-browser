@@ -1,0 +1,41 @@
+Lyra
+====
+
+Lyra is a privacy-focused browser. It is not Mozilla Firefox.
+The product name is Lyra.
+
+Firefox-derived files
+---------------------
+Firefox is a trademark of the Mozilla Foundation. Lyra does not use Mozilla
+or Firefox trademarks as the product name. Engine code comes from Mozilla
+Firefox source tarballs under MPL-2.0. This git repository does not vendor
+that source.
+
+Lyra mark
+---------
+The Lyra bird-and-ring mark is product branding. It is not Mozilla
+artwork. Do not use Mozilla's official Firefox branding. Source art lives at
+branding/lyra/assets/lyra-mark.png.
+
+Space Mono
+----------
+Space Mono Bold is included under the SIL Open Font License 1.1 for generating
+the LYRA wordmark. See branding/lyra/fonts/OFL.txt.
+Copyright 2016 The Space Mono Project Authors
+https://github.com/googlefonts/spacemono
+
+uBlock Origin
+-------------
+uBlock Origin is copyright Raymond Hill and contributors, licensed under
+GPL-3.0-only. Lyra does not vendor the XPI in git. The fetch script downloads
+a hash-pinned signed XPI from upstream. See extensions/ublock/.
+
+LibreWolf and arkenfox
+----------------------
+Vendor prefs and policies are inspired by LibreWolf settings and arkenfox
+user.js. Those projects remain copyright their authors under their licenses.
+Lyra does not copy their full files. Citations live in prefs/lyra.cfg.
+
+No analytics
+------------
+Lyra does not add first-party telemetry, crash phone-home, or usage analytics.

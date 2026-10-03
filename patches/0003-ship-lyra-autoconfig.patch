@@ -1,0 +1,26 @@
+From: Lyra <dev@lyrabrowser.com>
+Subject: Install Lyra autoconfig next to the browser binary
+
+Copy lyra.cfg into the application directory and lyra-settings.js into
+defaults/pref so general.config.filename can load it.
+
+---
+ browser/app/moz.build | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/browser/app/moz.build b/browser/app/moz.build
+index 1111111..2222222 100644
+--- a/browser/app/moz.build
++++ b/browser/app/moz.build
+@@ -33,6 +33,12 @@ with Files("profile/firefox.js"):
+ DIRS += ["distribution"]
+ 
+ # Neither channel-prefs.js nor firefox.exe want to end up in dist/bin/browser.
+ DIST_SUBDIR = ""
+ 
++FINAL_TARGET_FILES += ["lyra.cfg"]
++FINAL_TARGET_FILES.defaults.pref += ["profile/lyra-settings.js"]
++
+ if CONFIG["MOZ_WIDGET_TOOLKIT"] != "cocoa":
+     GeneratedFile(
+         "channel-prefs.js",

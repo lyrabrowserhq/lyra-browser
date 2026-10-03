@@ -1,0 +1,13 @@
+# Linux host extras. Concatenate after the root mozconfig:
+#   cat mozconfig mozconfig.linux > firefox-src/mozconfig
+
+# rustc 1.98+ lists x86_64-oe-linux-gnu beside x86_64-unknown-linux-gnu.
+# The default pc vendor host triplet cannot disambiguate, so pin the
+# triplets rustc knows.
+ac_add_options --host=x86_64-unknown-linux-gnu
+ac_add_options --target=x86_64-unknown-linux-gnu
+
+ac_add_options --enable-default-toolkit=cairo-gtk3
+ac_add_options --enable-pulseaudio
+ac_add_options --disable-eme
+ac_add_options --enable-bundled-fonts

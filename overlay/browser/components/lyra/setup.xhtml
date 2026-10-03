@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+<head>
+  <title>Lyra setup</title>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="chrome://browser/content/lyra/setup.css" />
+  <link rel="localization" href="browser/lyraSetup.ftl" />
+  <script defer="defer" src="chrome://browser/content/lyra/setup.js" />
+</head>
+<body>
+  <main id="setup">
+    <header>
+      <h1 data-l10n-id="lyra-setup-title"></h1>
+      <p data-l10n-id="lyra-setup-subtitle"></p>
+    </header>
+
+    <section id="step-welcome">
+      <p data-l10n-id="lyra-setup-welcome"></p>
+    </section>
+
+    <section id="step-import" hidden="hidden">
+      <h2 data-l10n-id="lyra-setup-import-title"></h2>
+      <p data-l10n-id="lyra-setup-import-desc"></p>
+      <button id="importButton" data-l10n-id="lyra-setup-import-button"></button>
+      <p class="hint" data-l10n-id="lyra-setup-import-hint"></p>
+    </section>
+
+    <section id="step-privacy" hidden="hidden">
+      <h2 data-l10n-id="lyra-setup-privacy-title"></h2>
+      <p data-l10n-id="lyra-setup-privacy-desc"></p>
+      <fieldset>
+        <legend data-l10n-id="lyra-setup-fingerprint"></legend>
+        <label><input type="radio" name="fingerprint" value="firefox" /> <span data-l10n-id="lyra-setup-fingerprint-firefox"></span></label>
+        <label><input type="radio" name="fingerprint" value="crowd" /> <span data-l10n-id="lyra-setup-fingerprint-crowd"></span></label>
+      </fieldset>
+      <fieldset>
+        <legend data-l10n-id="lyra-setup-geo-legend"></legend>
+        <label><input type="radio" name="geo" value="block" /> <span data-l10n-id="lyra-setup-geo"></span></label>
+        <label><input type="radio" name="geo" value="spoof" /> <span data-l10n-id="lyra-setup-geo-spoof"></span></label>
+        <label><input type="radio" name="geo" value="ask" /> <span data-l10n-id="lyra-setup-geo-ask"></span></label>
+      </fieldset>
+      <fieldset id="privacyChecks">
+        <label><input type="checkbox" data-pref="lyra.webrtc.protect" /> <span data-l10n-id="lyra-setup-webrtc"></span></label>
+        <label><input type="checkbox" data-pref="lyra.sensors.block" /> <span data-l10n-id="lyra-setup-sensors"></span></label>
+        <label><input type="checkbox" data-pref="lyra.lan.block" /> <span data-l10n-id="lyra-setup-lan"></span></label>
+        <label><input type="checkbox" data-pref="privacy.query_stripping.enabled" /> <span data-l10n-id="lyra-setup-querystrip"></span></label>
+      </fieldset>
+    </section>
+
+    <section id="step-search" hidden="hidden">
+      <h2 data-l10n-id="lyra-setup-search-title"></h2>
+      <p data-l10n-id="lyra-setup-search-desc"></p>
+      <fieldset id="engineList"></fieldset>
+    </section>
+
+    <section id="step-theme" hidden="hidden">
+      <h2 data-l10n-id="lyra-setup-theme-title"></h2>
+      <p data-l10n-id="lyra-setup-theme-desc"></p>
+      <fieldset id="themeList"></fieldset>
+    </section>
+
+    <section id="step-done" hidden="hidden">
+      <h2 data-l10n-id="lyra-setup-done-title"></h2>
+      <p data-l10n-id="lyra-setup-done-desc"></p>
+      <button id="finishButton" data-l10n-id="lyra-setup-finish"></button>
+    </section>
+
+    <nav>
+      <button id="backButton" data-l10n-id="lyra-setup-back"></button>
+      <button id="nextButton" data-l10n-id="lyra-setup-next"></button>
+    </nav>
+  </main>
+</body>
+</html>

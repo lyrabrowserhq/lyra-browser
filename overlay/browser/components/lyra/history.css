@@ -1,0 +1,95 @@
+/* Lyra history search page. */
+
+:root {
+  color-scheme: dark;
+}
+
+html, body {
+  margin: 0;
+  background: #0a0a0b;
+  color: #fafafa;
+  font: 15px/1.5 system-ui, sans-serif;
+}
+
+main {
+  max-width: 720px;
+  margin: 8vh auto 0;
+  padding: 0 24px 48px;
+}
+
+h1 {
+  font-size: 1.6em;
+  margin: 0 0 4px;
+}
+
+main > p {
+  color: #a4a4ad;
+  margin: 0 0 24px;
+}
+
+.bar {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+#q {
+  flex: 1;
+  background: #16161a;
+  border: 1px solid #2a2a32;
+  border-radius: 6px;
+  color: inherit;
+  font: inherit;
+  padding: 8px 12px;
+}
+
+.bar label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.hint {
+  font-size: 0.85em;
+  color: #8a8a90;
+  margin: 8px 0 24px;
+}
+
+#results {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#results li {
+  padding: 10px 0;
+  border-block-end: 1px solid #1d1d22;
+}
+
+#results a {
+  color: #9cc3ff;
+  text-decoration: none;
+}
+
+#results a:hover {
+  text-decoration: underline;
+}
+
+.meta, .url {
+  font-size: 0.8em;
+  color: #8a8a90;
+}
+
+.url {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.snippet {
+  font-size: 0.9em;
+  color: #c6c6cd;
+  margin: 4px 0;
+}

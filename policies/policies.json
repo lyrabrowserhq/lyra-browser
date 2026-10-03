@@ -1,0 +1,195 @@
+{
+  "policies": {
+    "DisableTelemetry": true,
+    "DisableFirefoxStudies": true,
+    "DisablePocket": true,
+    "DisableFeedbackCommands": true,
+    "DisableFirefoxAccounts": true,
+    "DisableFirefoxScreenshots": false,
+    "DisableAppUpdate": true,
+    "AppAutoUpdate": false,
+    "ManualAppUpdateOnly": true,
+    "DisableSystemAddonUpdate": true,
+    "DisableDefaultBrowserAgent": true,
+    "DontCheckDefaultBrowser": true,
+    "NoDefaultBookmarks": true,
+    "OverrideFirstRunPage": "",
+    "OverridePostUpdatePage": "",
+    "SkipTermsOfUse": true,
+    "TranslateEnabled": true,
+    "NetworkPrediction": false,
+    "CaptivePortal": false,
+    "DNSOverHTTPS": {
+      "Enabled": true,
+      "ProviderURL": "https://doh.dns.sb/dns-query",
+      "Fallback": true,
+      "Locked": false
+    },
+    "EnableTrackingProtection": {
+      "Value": true,
+      "Locked": false,
+      "Cryptomining": true,
+      "Fingerprinting": true,
+      "EmailTracking": true,
+      "SuspectedFingerprinting": true
+    },
+    "EncryptedMediaExtensions": {
+      "Enabled": false,
+      "Locked": false
+    },
+    "FirefoxHome": {
+      "Search": true,
+      "TopSites": false,
+      "SponsoredTopSites": false,
+      "Highlights": false,
+      "Pocket": false,
+      "SponsoredPocket": false,
+      "Snippets": false,
+      "Locked": false
+    },
+    "FirefoxSuggest": {
+      "WebSuggestions": false,
+      "SponsoredSuggestions": false,
+      "ImproveSuggest": false,
+      "Locked": false
+    },
+    "UserMessaging": {
+      "WhatsNew": false,
+      "ExtensionRecommendations": false,
+      "FeatureRecommendations": false,
+      "UrlbarInterventions": false,
+      "SkipOnboarding": true,
+      "MoreFromMozilla": false,
+      "FirefoxLabs": false,
+      "Locked": true
+    },
+    "Homepage": {
+      "URL": "about:home",
+      "Locked": false,
+      "StartPage": "homepage"
+    },
+    "SearchEngines": {
+      "PreventInstalls": false,
+      "Add": [
+        {
+          "Name": "Seek",
+          "URLTemplate": "https://seek.lyrabrowser.com/search?q={searchTerms}",
+          "Method": "GET",
+          "IconURL": "https://seek.lyrabrowser.com/favicon.ico",
+          "Alias": "seek",
+          "Description": "Seek"
+        },
+        {
+          "Name": "Brave Search",
+          "URLTemplate": "https://search.brave.com/search?q={searchTerms}",
+          "Method": "GET",
+          "IconURL": "https://search.brave.com/favicon.ico",
+          "Alias": "brave",
+          "Description": "Brave Search"
+        }
+      ],
+      "Remove": [
+        "Google",
+        "Bing",
+        "Amazon.com",
+        "eBay",
+        "Twitter"
+      ],
+      "Default": "Seek",
+      "DefaultPrivate": "Seek"
+    },
+    "SearchSuggestEnabled": false,
+    "3rdparty": {
+      "Extensions": {
+        "uBlock0@raymondhill.net": {
+          "adminSettings": "{\"selectedFilterLists\":[\"user-filters\",\"ublock-filters\",\"ublock-badware\",\"ublock-privacy\",\"ublock-abuse\",\"ublock-unbreak\",\"ublock-quick-fixes\",\"easylist\",\"easyprivacy\",\"urlhaus-1\",\"plowe-0\",\"block-lan\",\"ublock-annoyances\",\"fanboy-cookiemonster\"],\"userSettings\":{\"hyperlinkAuditingDisabled\":true,\"prefetchingDisabled\":true}}"
+        }
+      }
+    },
+    "Extensions": {
+      "Uninstall": [
+        "google@search.mozilla.org",
+        "bing@search.mozilla.org",
+        "amazondotcom@search.mozilla.org",
+        "ebay@search.mozilla.org",
+        "twitter@search.mozilla.org"
+      ]
+    },
+    "ExtensionSettings": {
+      "*": {
+        "blocked_install_message": "Lyra Browser does not ship Mozilla recommended add-ons. You can still install add-ons you trust.",
+        "installation_mode": "allowed",
+        "allowed_types": ["extension", "theme", "locale", "dictionary"]
+      },
+      "uBlock0@raymondhill.net": {
+        "installation_mode": "force_installed",
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi",
+        "default_area": "navbar",
+        "private_browsing": true,
+        "updates_disabled": false
+      }
+    },
+    "Preferences": {
+      "browser.contentblocking.category": {
+        "Value": "strict",
+        "Status": "default"
+      },
+      "privacy.resistFingerprinting": {
+        "Value": false,
+        "Status": "default"
+      },
+      "privacy.fingerprintingProtection": {
+        "Value": true,
+        "Status": "default"
+      },
+      "privacy.resistFingerprinting.letterboxing": {
+        "Value": false,
+        "Status": "default"
+      },
+      "network.trr.mode": {
+        "Value": 2,
+        "Status": "default"
+      },
+      "network.trr.uri": {
+        "Value": "https://doh.dns.sb/dns-query",
+        "Status": "default"
+      },
+      "privacy.globalprivacycontrol.enabled": {
+        "Value": true,
+        "Status": "default"
+      },
+      "datareporting.policy.dataSubmissionEnabled": {
+        "Value": false,
+        "Status": "locked"
+      },
+      "toolkit.telemetry.enabled": {
+        "Value": false,
+        "Status": "locked"
+      },
+      "browser.ml.enable": {
+        "Value": false,
+        "Status": "locked"
+      },
+      "browser.vpn_promo.enabled": {
+        "Value": false,
+        "Status": "locked"
+      },
+      "browser.shopping.experience2023.enabled": {
+        "Value": false,
+        "Status": "locked"
+      },
+      "identity.fxaccounts.enabled": {
+        "Value": false,
+        "Status": "default"
+      },
+      "extensions.activeThemeID": {
+        "Value": "lyra-dark@lyrabrowser.com",
+        "Status": "default"
+      }
+    },
+    "SupportMenu": {
+      "Title": "Lyra Browser",
+      "URL": "https://lyrabrowser.com/"
+    }
+  }
+}

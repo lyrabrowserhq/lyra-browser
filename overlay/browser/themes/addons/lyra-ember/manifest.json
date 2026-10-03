@@ -1,0 +1,56 @@
+{
+  "manifest_version": 2,
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "lyra-ember@lyrabrowser.com"
+    }
+  },
+  "name": "Lyra Ember",
+  "description": "Lyra ember chrome.",
+  "author": "Lyra",
+  "version": "1.0.0",
+  "icons": {
+    "32": "icon.svg"
+  },
+  "theme": {
+    "properties": {
+      "color_scheme": "dark"
+    },
+    "colors": {
+      "frame": "#17120F",
+      "tab_background_text": "#F6EAE1",
+      "tab_text": "#F6EAE1",
+      "tab_line": "#E8823C",
+      "tab_loading": "#E8823C",
+      "tab_selected": "#221A15",
+      "toolbar": "#221A15",
+      "toolbar_text": "#F6EAE1",
+      "toolbar_field": "#17120F",
+      "toolbar_field_text": "#F6EAE1",
+      "toolbar_field_border": "#4A3425",
+      "toolbar_field_border_focus": "#E8823C",
+      "toolbar_field_highlight": "#2E221A",
+      "toolbar_top_separator": "#17120F",
+      "toolbar_bottom_separator": "#17120F",
+      "toolbar_vertical_separator": "#4A3425",
+      "button_background_hover": "#2E221A",
+      "button_background_active": "#3A2C20",
+      "icons": "#F6EAE1",
+      "icons_attention": "#E8823C",
+      "ntp_background": "#17120F",
+      "ntp_text": "#F6EAE1",
+      "popup": "#221A15",
+      "popup_text": "#F6EAE1",
+      "popup_border": "#4A3425",
+      "popup_highlight": "#2E221A",
+      "popup_highlight_text": "#F6EAE1",
+      "sidebar": "#17120F",
+      "sidebar_text": "#F6EAE1",
+      "sidebar_border": "#4A3425",
+      "sidebar_highlight": "#221A15",
+      "sidebar_highlight_text": "#F6EAE1",
+      "bookmark_text": "#F6EAE1",
+      "focus_outline": "#E8823C"
+    }
+  }
+}

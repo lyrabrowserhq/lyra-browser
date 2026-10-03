@@ -1,0 +1,21 @@
+[Desktop Entry]
+Version=1.0
+Name=Lyra
+GenericName=Web Browser
+Comment=Privacy-focused web browser
+Exec=lyra %u
+Icon=lyra
+Terminal=false
+Type=Application
+MimeType=text/html;text/xml;application/xhtml+xml;application/xml;application/vnd.mozilla.xul+xml;application/rss+xml;application/rdf+xml;image/gif;image/jpeg;image/png;x-scheme-handler/http;x-scheme-handler/https;
+StartupWMClass=lyra
+Categories=Network;WebBrowser;
+Actions=new-window;new-private-window;
+
+[Desktop Action new-window]
+Name=New Window
+Exec=lyra --new-window %u
+
+[Desktop Action new-private-window]
+Name=New Private Window
+Exec=lyra --private-window %u
