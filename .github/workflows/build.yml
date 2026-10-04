@@ -175,7 +175,11 @@ jobs:
       - name: Compile Lyra
         shell: pwsh
         run: |
-          & $env:MOZ_BASH -lc 'cd "$(cygpath -u "$GITHUB_WORKSPACE")" && exec bash scripts/ci-windows-build.sh'
+          # libwebrtc unified sources blow past MAX_PATH under the long
+          # workspace path; map the workspace to a drive letter so the
+          # objdir paths stay short.
+          subst X: "$env:GITHUB_WORKSPACE"
+          & $env:MOZ_BASH -lc 'cd "$(cygpath -u "X:\\")" && exec bash scripts/ci-windows-build.sh'
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: Upload Windows zip
