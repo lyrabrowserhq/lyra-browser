@@ -63,9 +63,9 @@ if ! command -v gmake >/dev/null && ! command -v make >/dev/null; then
     mkdir -p "$mm_dir"
     if [[ ! -f "$mm_dir/mozmake.tar.zst" ]]; then
       curl -fL --retry 3 -o "$mm_dir/mozmake.tar.zst" \
-        "https://firefox-ci-tc.services.mozilla.com/api/index/v1/task/gecko.cache.level-3.toolchains.v3.win64-mozmake.latest/artifacts/public/build/mozmake.tar.zst"
+        "https://firefox-ci-tc.services.mozilla.com/api/queue/v1/task/a261nSRsRBaOEb6iKG08wg/artifacts/public/build/mozmake.tar.zst"
     fi
-    echo "f5814ba25533e399ec4bd94e10f5d48281e98f74bbb9467e1792db55945683f3  $mm_dir/mozmake.tar.zst" | sha256sum -c -
+    echo "5ddc061caf4d487db845e49b7211bfcf7d7db4b9a55ae20096c829c92b445aa0  $mm_dir/mozmake.tar.zst" | sha256sum -c -
     /c/Windows/System32/tar.exe -C "$mm_dir" -xf "$mm_dir/mozmake.tar.zst"
   fi
   cp "$mm_dir/mozmake/mozmake.exe" "$mm_dir/mozmake/gmake.exe"
