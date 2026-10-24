@@ -1,10 +1,10 @@
 LYRA_VERSION=0.1.1
 LYRA_APP_ID={3a3a4f99-f5ed-5ace-b1c2-6ca778f01a59}
-FIREFOX_VERSION=153.4.0esr
+FIREFOX_VERSION=153.5.1esr
 FIREFOX_CHANNEL=esr
-FIREFOX_SOURCE_URL=https://archive.mozilla.org/pub/firefox/releases/153.4.0esr/source/firefox-153.4.0esr.source.tar.xz
-FIREFOX_SOURCE_ASC_URL=https://archive.mozilla.org/pub/firefox/releases/153.4.0esr/source/firefox-153.4.0esr.source.tar.xz.asc
-FIREFOX_SOURCE_SHA256=3082dec68030b4fbb46041c282e362e524c9d6d75e7c45e944d8d0e11c8ea2df
+FIREFOX_SOURCE_URL=https://archive.mozilla.org/pub/firefox/releases/153.5.1esr/source/firefox-153.5.1esr.source.tar.xz
+FIREFOX_SOURCE_ASC_URL=https://archive.mozilla.org/pub/firefox/releases/153.5.1esr/source/firefox-153.5.1esr.source.tar.xz.asc
+FIREFOX_SOURCE_SHA256=c6888848f90e7ebeacad38725b9bbbfe7c9bea7078098d47a2cf2c1ff3e18b83
 UBLOCK_VERSION=1.75.0
 UBLOCK_ID=uBlock0@raymondhill.net
 UBLOCK_XPI_NAME=uBlock0_1.75.0.firefox.signed.xpi

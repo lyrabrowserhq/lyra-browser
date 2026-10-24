@@ -188,6 +188,23 @@ def check_lyra_cfg() -> None:
     ):
         if needle not in raw:
             error(f"prefs/lyra.cfg missing {needle}")
+    for needle in (
+        'defaultPref("security.remote_settings.crlite_filters.enabled", true)',
+        'defaultPref("security.pki.crlite_mode", 2)',
+    ):
+        if needle not in raw:
+            error(f"prefs/lyra.cfg missing {needle}")
+    for pref_name in (
+        "services.settings.server",
+        "services.settings.poll_interval",
+        "services.settings.default_bucket",
+        "security.onecrl.",
+        "security.remote_settings.intermediates.",
+        "security.remote_settings.crlite_filters.bucket",
+        "security.remote_settings.crlite_filters.collection",
+    ):
+        if f'("{pref_name}' in raw:
+            error(f"lyra.cfg must not override revocation delivery pref {pref_name}")
     if "telemetry.mozilla.org" in raw:
         error("lyra.cfg must not set a Mozilla telemetry server URL")
     if "landlock" in raw.lower():
