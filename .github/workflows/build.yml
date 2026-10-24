@@ -89,7 +89,7 @@ jobs:
           path: out/lyra-*-linux-x86_64.tar.xz
           if-no-files-found: error
           compression-level: 0
-          retention-days: 14
+          retention-days: 7
 
   windows:
     name: Windows x86_64
@@ -188,7 +188,7 @@ jobs:
           path: out/lyra-*-windows-x86_64.zip
           if-no-files-found: error
           compression-level: 0
-          retention-days: 14
+          retention-days: 7
 
   release:
     name: GitHub release

@@ -2,7 +2,14 @@ name: validate
 
 on:
   push:
+    branches: [master]
+    paths-ignore:
+      - "**.md"
+      - "LICENSE"
   pull_request:
+    paths-ignore:
+      - "**.md"
+      - "LICENSE"
   workflow_dispatch:
 
 permissions:
@@ -16,6 +23,7 @@ jobs:
   overlay:
     name: Overlay layout
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: read
     steps:
@@ -39,6 +47,7 @@ jobs:
   overlay-windows:
     name: Overlay layout (Windows)
     runs-on: windows-latest
+    timeout-minutes: 10
     permissions:
       contents: read
     steps:
@@ -94,6 +103,7 @@ jobs:
   zizmor:
     name: zizmor
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: read
     steps:
