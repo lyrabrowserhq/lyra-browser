@@ -5,7 +5,7 @@
 
 Privacy browser overlay. This git repo does not contain engine source.
 
-Pinned base: 153.5.1esr.
+Pinned base: 153.6.0esr.
 
 Site: https://lyrabrowser.com
 
@@ -13,7 +13,7 @@ Site: https://lyrabrowser.com
 
 | Feature | Detail |
 | --- | --- |
-| Engine | 153.5.1esr |
+| Engine | 153.6.0esr |
 | uBlock Origin | Force-installed 1.75.0, AMO updates on |
 | Telemetry | Mozilla telemetry, studies, Pocket, and accounts promo off |
 | Search | Seek. Brave Search and DuckDuckGo still listed. Google, Bing, Amazon, eBay, and Twitter engines removed |
